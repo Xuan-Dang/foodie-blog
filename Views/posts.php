@@ -99,14 +99,15 @@
                                 <h4>Categories</h4>
                             </div>
                             <ul class="blog-cat">
-                                <li><a href="#link">Foodie
-                                        <label>4</label></a></li>
-                                <li><a href="#link">Cook
-                                        <label>8</label></a></li>
-                                <li><a href="#link"> Recipes
-                                        <label>8</label></a></li>
-                                <li><a href="#link"> Guides
-                                        <label>3</label></a></li>
+                                <?php if(isset($categories)): ?>
+                                    <?php foreach($categories as $index => $category): ?>
+                                        <li>
+                                            <a href="?controller=post&page=1&category=<?php echo $category["cat_id"] ?>"><?php echo $category["cat_name"] ?>
+                                                <label><?php echo $category["post_count"] ?></label>
+                                            </a>
+                                        </li>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             </ul>
                         </div>
 
@@ -154,6 +155,13 @@
         </div>
     </section>
     <!-- //blog page -->
+    <?php 
+        if(isset($newestPosts)) {
+            echo "<pre>";
+            print_r($newestPosts);
+            echo "</pre>";
+        }
+    ?>
     <div style="margin: 8px auto; display: block; text-align:center;">
         <!---728x90--->
     </div>

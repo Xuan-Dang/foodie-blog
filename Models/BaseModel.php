@@ -5,7 +5,9 @@ class BaseModel extends Database
     protected $stmt = null;
     protected $sql = "";
     protected $params = [];
-    public function _connect() {
+    protected $count = 0;
+    public function _connect()
+    {
         try {
             $this->conn = $this->connect();
             return $this;
@@ -53,9 +55,10 @@ class BaseModel extends Database
     }
 
     //Xóa nhiều bản ghi
-    public function deleteMany($table, $column, $ids) {
+    public function deleteMany($table, $column, $ids)
+    {
         $placeholders = [];
-        foreach($ids as $index => $id) {
+        foreach ($ids as $index => $id) {
             $placeholders[":value{$index}"] = $id;
         }
         $placeholdersList = implode(", ", array_keys($placeholders));
@@ -76,7 +79,8 @@ class BaseModel extends Database
     {
         $placeholders = [];
         foreach ($values as $index => $value) {
-            $placeholders[":value{$index}"] = $value;
+            $placeholders[":value{$this->count}"] = $value;
+            $this->count++;
         }
         $placeholdersList = implode(", ", array_keys($placeholders));
         if (strpos($this->sql, 'WHERE') !== false) {
@@ -130,7 +134,8 @@ class BaseModel extends Database
         return $this;
     }
 
-    public function between($column, $min, $max) {
+    public function between($column, $min, $max)
+    {
         if (strpos($this->sql, 'WHERE') !== false) {
             $this->sql .= " AND {$column} BETWEEN :min AND :max";
         } else {
@@ -141,19 +146,27 @@ class BaseModel extends Database
         return $this;
     }
 
-    public function _count($table, $column) {
-        $this -> sql = "SELECT count($column) AS result FROM $table";
+    public function _count($table, $column)
+    {
+        $this->sql = "SELECT count($column) AS result FROM $table";
         return $this;
     }
 
     //Thực hiện truy vấn
     protected function _execute()
     {
+        echo $this->sql;
+        echo "<br>";
+        echo "<br>";
         $this->stmt  = $this->conn->prepare($this->sql);
         if (!$this->stmt) {
             throw new Error(implode("<br>", $this->conn->errorInfo()));
         }
-        $isExecute = $this->stmt->execute($this->params);
+        if ($this->params) {
+            $isExecute = $this->stmt->execute($this->params);
+        } else {
+            $isExecute = $this->stmt->execute();
+        }
         if (!$isExecute) {
             throw new Error(implode("<br>", $this->conn->errorInfo()));
         }
@@ -164,6 +177,7 @@ class BaseModel extends Database
         // Đặt $this->sql và $this->params thành giá trị mặc định
         $this->sql = "";
         $this->params = [];
+        $this->count = 0;
 
         // Kiểm tra trạng thái của câu lệnh SQL
         if ($isSelect) {

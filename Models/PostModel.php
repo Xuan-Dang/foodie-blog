@@ -9,7 +9,7 @@ class PostModel extends BaseModel
         $this->db = new BaseModel;
         $this->helper = new Helper;
     }
-    public function getAllPosts($limit, $offset, $condition)
+    public function getAllPosts($limit, $offset, $conditions)
     {
         $postColumns = [
             "posts.id AS post_id",
@@ -26,17 +26,26 @@ class PostModel extends BaseModel
         ];
         try {
             $this->db->_connect();
-            $posts = $this->db->find(self::POST_TABLE, $postColumns)
-                ->join("p_img_lookup", "post_id", "posts.id")
-                ->join("images", "id", "p_img_lookup.img_id")
-                ->join("users", "id", "posts.author")
-                ->join("p_cat_lookup", "post_id", "posts.id")
-                ->join("categories", "id", "p_cat_lookup.category_id")
-                ->where("posts.active", [1])
-                ->order("posts.created_at", "DESC")
-                ->limit($limit)
-                ->offset($offset)
-                ->_execute();
+            $query = $this->db->find(self::POST_TABLE, $postColumns)
+            ->join("p_img_lookup", "post_id", "posts.id")
+            ->join("images", "id", "p_img_lookup.img_id")
+            ->join("users", "id", "posts.author")
+            ->join("p_cat_lookup", "post_id", "posts.id")
+            ->join("categories", "id", "p_cat_lookup.category_id")
+            ->where("posts.active", [1]);
+            if(count($conditions) > 0) {
+                foreach($conditions as $key => $value) {
+                    if($key === "search") {
+                        $query -> search("posts.name", $value);
+                    }else {
+                        $query -> where($key, [$value]);
+                    }
+                }
+            }
+            $posts = $query->order("posts.created_at", "DESC")
+                        ->limit($limit)
+                        ->offset($offset)
+                        ->_execute();
             return ["data" => $posts, "error" => null];
         } catch (Exception $e) {
             return ["data" => null, "error" => $e->getMessage()];
@@ -52,7 +61,8 @@ class PostModel extends BaseModel
             $this->db->_connect();
             $query = $this->db->_count(self::POST_TABLE, "DISTINCT posts.id")
                 ->join("p_cat_lookup", "post_id", "posts.id")
-                ->join("categories", "id", "p_cat_lookup.category_id");
+                ->join("categories", "id", "p_cat_lookup.category_id")
+                ->where("posts.active", [1]);
             if (count($condition) > 0) {
                 foreach ($condition as $key => $value) {
                     if ($key === "search") {
@@ -70,6 +80,32 @@ class PostModel extends BaseModel
             return ["data" => null, "error" => $e->getMessage()];
         } catch (Error $e) {
             die($e);
+            return ["data" => null, "error" => $e->getMessage()];
+        } finally {
+            $this->db->_close();
+        }
+    }
+    public function getNewestPost($limit, $categoryId=null) {
+        $columns = [
+            "posts.id AS p_id",
+            "posts.name AS p_name",
+            "posts.url AS p_url",
+            "posts.created_at AS p_created",
+            "images.url AS img_url",
+            "p_img_lookup.img_alt AS img_alt",
+            "p_img_lookup.img_title AS img_title"
+        ];
+        try {
+            $this->db->_connect();
+            $query = $this->db->find(self::POST_TABLE, $columns)
+                                ->join("p_img_lookup", "post_id", "posts.id")
+                                ->join("images", "id", "p_img_lookup.img_id");
+            if($categoryId) $query->join("p_cat_lookup", "category_id", $categoryId)-> where("p_cat_lookup.category_id", [$categoryId]);
+            $result = $query ->limit($limit)-> _execute();
+            return ["data"=>$result, "error"=>null];
+        }catch (Exception $e) {
+            return ["data" => null, "error" => $e->getMessage()];
+        } catch (Error $e) {
             return ["data" => null, "error" => $e->getMessage()];
         } finally {
             $this->db->_close();

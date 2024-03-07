@@ -24,7 +24,7 @@ Author URL: http://w3layouts.com
 
 <body>
     <!--header-->
-    <header id="site-header" class="fixed-top">
+    <header id="site-header">
         <div class="container">
             <nav class="navbar navbar-expand-lg stroke">
                 <h1>
