@@ -30,13 +30,27 @@ class PostController extends BaseController
         $categories = $this->categoryModel->getAllCategory();
         if ($categories["error"]) die($categories["error"]);
         $newestPosts = $this->postModel->getNewestPost(5, $categoryId);
-        if($newestPosts["error"]) die($newestPosts["error"]);
+        if ($newestPosts["error"]) die($newestPosts["error"]);
+        $categoryById = null;
+        if($categoryId) {
+            $categoryById = $this->categoryModel->getCategoryById($categoryId);
+        }
+        if($categoryById && $categoryById["error"]) {
+            die($categoryById["error"]);
+        }
+        if($categoryById) {
+            $pageTitle = $categoryById["data"]["name"];
+            $metaDescription = $categoryById["data"]["description"];
+        }
         $data =  [
-            "posts" => $posts["data"], 
-            "pagination" => $pagination["data"], 
-            "categories" => $categories["data"], 
+            "posts" => $posts["data"],
+            "pagination" => $pagination["data"],
+            "categories" => $categories["data"],
             "pageTitle" => $pageTitle,
-            "newestPosts" => $newestPosts["data"]
+            "newestPosts" => $newestPosts["data"],
+            "category"=> $categoryById ? $categoryById["data"] : null,
+            "metaDescription"=> isset($metaDescription) ? $metaDescription : "",
+
         ];
         return $this->view("posts", $data);
     }

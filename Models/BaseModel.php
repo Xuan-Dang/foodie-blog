@@ -155,9 +155,6 @@ class BaseModel extends Database
     //Thực hiện truy vấn
     protected function _execute()
     {
-        echo $this->sql;
-        echo "<br>";
-        echo "<br>";
         $this->stmt  = $this->conn->prepare($this->sql);
         if (!$this->stmt) {
             throw new Error(implode("<br>", $this->conn->errorInfo()));
