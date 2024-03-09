@@ -112,4 +112,7 @@ class PostModel extends BaseModel
             $this->db->_close();
         }
     }
-}
+    public function getOnePost() {
+        
+    }
+} 

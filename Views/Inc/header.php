@@ -20,7 +20,7 @@ Author URL: http://w3layouts.com
     <!-- //google-fonts -->
     <!-- Template CSS Style link -->
     <link rel="stylesheet" href="Public/assets/css/style-liberty.css">
-    <title><?php echo $pageTitle ?></title>
+    <title><?php if(isset($pageTitle)) echo $pageTitle ?></title>
 </head>
 
 <body>
