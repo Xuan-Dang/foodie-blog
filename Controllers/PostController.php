@@ -71,4 +71,17 @@ class PostController extends BaseController
         ];
         return $this->view("posts", $data);
     }
+    public function show() {
+        if(!isset($_GET["id"])) die("Đầu vào không hợp lệ");
+
+        $post = $this->postModel->getOnePost((int)$_GET["id"]);
+        if($post["error"]) die($post["error"]);
+        $sidebarData = $this->sidebarModel->getAllData();
+        $data = [
+            "post"=>$post["data"],
+            "sidebarData"=>$sidebarData["data"],
+
+        ];
+        return $this->view("singlePost", $data);
+    }
 }

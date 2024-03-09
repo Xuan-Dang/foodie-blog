@@ -3,6 +3,7 @@
     require "Models/BaseModel.php";
     require "Controllers/BaseController.php";
     require "Helpers/helper.php";
+    
     $controller = strtolower($_REQUEST["controller"] ?? "home");
     $controller = str_replace('-', ' ', $controller);
     $controller = ucwords($controller);

@@ -1,12 +1,19 @@
+<?php
+if (isset($post)) {
+    $pageTitle = htmlspecialchars($post["p_name"]);
+
+    $metaDescription = htmlspecialchars($post["p_desc"]);
+}
+?>
 <?php include "Views/inc/header.php" ?>
 <!-- inner banner -->
-<section class="inner-banner py-5">
+<section class="inner-banner py-5" style="background-image: url('Public/<?php echo htmlspecialchars($post["img_url"]) ?>')">
     <div class="w3l-breadcrumb py-lg-5">
         <div class="container pt-sm-5 pt-4 pb-sm-4">
-            <h4 class="inner-text-title font-weight-bold pt-5">Standard post with right sidebar</h4>
+            <h1 class="inner-text-title font-weight-bold pt-5"><?php echo htmlspecialchars($post["p_name"]) ?></h1>
             <ul class="breadcrumbs-custom-path">
-                <li><a href="index.html">Home</a></li>
-                <li class="active"><span class="fa fa-chevron-right mx-2" aria-hidden="true"></span>Blog Single 1
+                <li><a href="?controller=index">Home</a></li>
+                <li class="active"><span class="fa fa-chevron-right mx-2" aria-hidden="true"></span><?php echo htmlspecialchars($post["p_name"]) ?>
                 </li>
             </ul>
         </div>
@@ -25,44 +32,15 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 text11-content">
-                    <img src="assets/images/blog-single.jpg" class="img-fluid radius-image" alt="">
-                    <h4 class="title font-weight-bold mt-4">Healthy Food, A theme for Food Blogger</h4>
+                    <img src="Public/<?php echo htmlspecialchars($post["img_url"]) ?>" class="img-fluid radius-image" alt="">
+                    <h2 class="title font-weight-bold mt-4"><?php echo htmlspecialchars($post["p_name"]) ?></h2>
                     <ul class="admin-list mt-2 mb-4">
-                        <li><a href="blog-single.html"><i class="far fa-user"></i>Teri Dac
+                        <li><a href="blog-single.html"><i class="far fa-user"></i><?php echo htmlspecialchars($post["username"]) ?>
                             </a></li>
-                        <li><a href="blog-single.html"><i class="far fa-heart"></i>16 Likes</a></li>
                         <li><a href="blog-single.html"><i class="far fa-comment-dots"></i>8 Comments</a>
                         </li>
                     </ul>
-                    <p class="mb-3">Fusce faucibus ante vitae justo efficitur elementum. Donec et ipsum
-                        faucibus
-                        arcu
-                        ipsum elementum, luctus justo. ac purus semper. Fusce faucibus ante vitae justo efficitur
-                        sed et
-                        elementum. Donec ipsum
-                        faucibus arcu elementum, luctus justo. ac purus semper. Fusce faucibus ante vitae justo
-                        efficitur
-                        elementum. Donec ipsum faucibus arcu...</p>
-                    <p class="mb-4">Lorem faucibus fusce ante vitae justo efficitur elementum. Donec ipsum faucibus
-                        arcu elementum, luctus justo. ac purus semper. Fusce faucibus ante vitae justo efficitur
-                        elementum. Donec ipsum faucibus. Donec ipsum faucibus arcu elementum..</p>
-                    <blockquote class="quote my-sm-5 my-4">
-                        <q>
-                            Lorem ipsum dolor sit amet,Ea consequuntur illum facere aperiam sequi optio
-                            consectetur.Ea
-                            consequuntur illum facere aperiam sequi optio consectetur adipisicing elitFuga, suscipit
-                            totam
-                            animi consequatur.</q>
-                        <footer class="blockquote-footer mt-3">
-                            Alexander tony</footer>
-                    </blockquote>
-                    <p class="mb-3">Lorem faucibus fusce ante vitae justo efficitur elementum. Donec ipsum faucibus
-                        arcu elementum, luctus justo. ac purus semper. Fusce faucibus ante vitae justo efficitur
-                        elementum. Donec ipsum faucibus. Donec ipsum faucibus arcu elementum..</p>
-                    <p class="mb-3">Lorem faucibus fusce ante vitae justo efficitur elementum. Donec ipsum
-                        faucibus
-                        arcu elementum, luctus justo. ac purus semper. Fusce faucibus ante vitae justo efficitur
-                        elementum. Donec ipsum faucibus. Donec ipsum faucibus arcu elementum..</p>
+                    <?php echo $post["p_content"]; ?>
                     <div class="item mt-5">
                         <h3 class="aside-title">Maybe You are interested in </h3>
                         <div class="row">
@@ -98,52 +76,20 @@
                                 </div>
                             </div>
                         </div>
-
-                        <p class="mb-3 mt-4">Lorem faucibus fusce ante vitae justo efficitur elementum. Donec ipsum
-                            faucibus
-                            arcu elementum, luctus justo. ac purus semper. Fusce faucibus ante vitae justo efficitur
-                            elementum. Donec ipsum faucibus. Donec ipsum faucibus arcu elementum..</p>
-
-                        <p class="mb-3">Lorem faucibus fusce ante vitae justo efficitur elementum. Donec ipsum
-                            faucibus
-                            arcu elementum, luctus justo. ac purus semper. Fusce faucibus ante vitae justo efficitur
-                            elementum. Donec ipsum faucibus. Donec ipsum faucibus arcu elementum..</p>
-                        <p class="mb-3">Lorem faucibus fusce ante vitae justo efficitur elementum. Donec ipsum
-                            faucibus
-                            arcu elementum, luctus justo. ac purus semper. Fusce faucibus ante vitae justo efficitur
-                            elementum. Donec ipsum faucibus. Donec ipsum faucibus arcu elementum..</p>
-                        <p class="mb-3">Lorem faucibus fusce ante vitae justo efficitur elementum. Donec ipsum
-                            faucibus
-                            arcu elementum, luctus justo. ac purus semper. Fusce faucibus ante vitae justo efficitur
-                            elementum. Donec ipsum faucibus. Donec ipsum faucibus arcu elementum..</p>
                     </div>
 
-                    <div class="social-share-blog mt-5">
-                        <ul class="column3 social m-0 p-0">
-                            <li>
-                                <p class="m-0 mr-4">Share this post :</p>
-                            </li>
-                            <li><a href="#facebook" class="facebook"><span class="fab fa-facebook-f"></span></a>
-                            </li>
-                            <li><a href="#twitter" class="twitter"><span class="fab fa-twitter"></span></a></li>
-                            <li><a href="#instagram" class="instagram"><span class="fab fa-instagram"></span></a>
-                            </li>
-                        </ul>
-                    </div>
                     <div class="author-cardview my-5">
                         <div class="row author-card author-listhny align-items-center">
                             <div class="author-left col-md-3 mb-md-0 mb-4 pl-lg-0">
                                 <a href="#url">
-                                    <img class="img-fluid img-curve" src="assets/images/team1.jpg" alt=" ">
+                                    <img class="img-fluid img-curve" src="Public/<?php echo htmlspecialchars($post["user_avatar"]) ?>" alt="<?php echo htmlspecialchars($post["username"]) ?> avatar">
                                 </a>
                             </div>
                             <div class="author-right col-md-9 position-relative">
 
-                                <h4 class="mt-0 mb-1"><a href="#url" class="title-team-28">About Maureen Bio</a>
+                                <h4 class="mt-0 mb-1"><a href="#url" class="title-team-28"><?php echo htmlspecialchars($post["username"]) ?></a>
                                 </h4>
-                                <p class="para-team mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                    Tempore sapiente distinctio soluta excepturi?
-                                    Obcaecati, corporis velit.</p>
+                                <p class="para-team mb-0"><?php echo htmlspecialchars($post["about_user"]) ?></p>
 
                                 <div class="social mt-4">
                                     <li><a href="#facebook" class="facebook"><span class="fab fa-facebook-f"></span></a></li>

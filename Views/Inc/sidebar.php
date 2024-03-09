@@ -11,7 +11,7 @@
                         <article class="post">
                             <img src="Public/<?php echo htmlspecialchars($post["img_url"]) ?>" alt="<?php echo htmlspecialchars($post["img_alt"]) ?>" title="<?php echo htmlspecialchars($post["img_title"]) ?>">
                             <div class="text">
-                                <a href="blog-single.html"><?php echo htmlspecialchars($post["p_name"]) ?></a>
+                                <a href="?controller=post&action=show&url=<?php echo htmlspecialchars($post["p_url"]) ?>&id=<?php echo htmlspecialchars($post["p_id"]) ?>"><?php echo htmlspecialchars($post["p_name"]) ?></a>
                                 <div class="post-info">
                                     <?php echo date_format(new DateTime(htmlspecialchars($post["p_created"])), "d/m/Y") ?></div>
                             </div>
@@ -33,7 +33,7 @@
                     <?php if (count($sidebarData["categories"]) > 0) : ?>
                         <?php foreach ($sidebarData["categories"] as $index => $category) : ?>
                             <li>
-                                <a href="?controller=post&page=1&category=<?php echo htmlspecialchars($category["cat_id"]) ?>"><?php echo htmlspecialchars($category["cat_name"]) ?>
+                                <a href="?controller=post&page=1&category_url=<?php echo htmlspecialchars($category["cat_url"]) ?>&category=<?php echo htmlspecialchars($category["cat_id"]) ?>"><?php echo htmlspecialchars($category["cat_name"]) ?>
                                     <label><?php echo htmlspecialchars($category["post_count"]) ?></label>
                                 </a>
                             </li>

@@ -112,7 +112,37 @@ class PostModel extends BaseModel
             $this->db->_close();
         }
     }
-    public function getOnePost() {
-        
+    public function getOnePost($id) {
+        $columns = [
+            "posts.name AS p_name",
+            "posts.url AS p_url", 
+            "posts.description AS p_desc",
+            "posts.content AS p_content",
+            "images.url AS img_url",
+            "p_img_lookup.img_alt AS img_alt",
+            "p_img_lookup.img_title AS img_title",
+            "users.username AS username",
+            "users.avatar AS user_avatar",
+            "abouts.description AS about_user"
+        ];
+        try {
+            $this->db->_connect();
+            $post = $this->db->find(self::POST_TABLE, $columns)
+                            ->join("p_img_lookup", "post_id", "posts.id")
+                            ->join("images", "id", "p_img_lookup.img_id")
+                            ->join("users", "id", "posts.author")
+                            ->join("abouts", "user_id", "users.id")
+                            ->where("posts.id", [$id])
+                            ->order("posts.created_at", "DESC")
+                            ->limit(1)
+                            ->_execute();
+            return ["data"=>$post[0], "error"=>null];
+        }catch (Exception $e) {
+            return ["data" => null, "error" => $e->getMessage()];
+        } catch (Error $e) {
+            return ["data" => null, "error" => $e->getMessage()];
+        } finally {
+            $this->db->_close();
+        }
     }
 } 

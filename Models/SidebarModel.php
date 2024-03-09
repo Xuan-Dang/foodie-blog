@@ -11,7 +11,7 @@ class SidebarModel extends BaseModel
     {
         $this->db = new BaseModel;
     }
-    public function getAllData($categoryId)
+    public function getAllData($categoryId=null)
     {
         $postColumns = [
             "posts.id AS p_id",
@@ -63,6 +63,7 @@ class SidebarModel extends BaseModel
             $adResult = $this->find(self::ADS_TABLE, $adColumns)->where("position", [1])->order("created_at", "DESC")->limit(1)->_execute();
             //
             $socialResult = $this->find(self::SOCIALS_TABLE, $socialColumns)->where("user_id", [0])->_execute();
+            //
             $data = [
                 "posts" => $newestPostsResult,
                 "categories" => $categoriesResult,

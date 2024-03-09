@@ -29,17 +29,17 @@
                             <?php foreach ($posts as $index => $post) : ?>
                                 <div class="col-sm-6 card mt-sm-0 my-3">
                                     <div class="card-header p-0 position-relative border-0">
-                                        <a href="blog-single.html">
+                                        <a href="?controller=post&action=show&url=<?php echo htmlspecialchars($post["post_url"]) ?>&id=<?php echo htmlspecialchars($post["post_id"]) ?>">
                                             <img class="card-img-bottom d-block radius-image" src="Public/<?php echo htmlspecialchars($post["img_url"]) ?>" alt="<?php echo htmlspecialchars($post["img_alt"]) ?>" title="<?php echo htmlspecialchars($post["img_title"]) ?>" loading="lazy" />
                                         </a>
-                                        <a href="blog-single.html" class="category-style"><?php echo htmlspecialchars($post["cat_name"]) ?></a>
+                                        <a href="?controller=post&action=show&url=<?php echo htmlspecialchars($post["post_url"]) ?>&id=<?php echo htmlspecialchars($post["post_id"]) ?>" class="category-style"><?php echo htmlspecialchars($post["cat_name"]) ?></a>
                                     </div>
                                     <div class="title-wrap title-wrap-2">
-                                        <h4 class="title"><a href="blog-single.html"><?php echo htmlspecialchars($post["post_name"]) ?></a></h4>
+                                        <h4 class="title"><a href="?controller=post&action=show&url=<?php echo htmlspecialchars($post["post_url"]) ?>&id=<?php echo htmlspecialchars($post["post_id"]) ?>"><?php echo htmlspecialchars($post["post_name"]) ?></a></h4>
                                         <ul class="admin-list mt-2 mb-4">
-                                            <li><a href="blog-single.html"><i class="far fa-user"></i><?php echo htmlspecialchars($post["username"]) ?>
+                                            <li><a href="?controller=posts&user=1"><i class="far fa-user"></i><?php echo htmlspecialchars($post["username"]) ?>
                                                 </a></li>
-                                            <li><a href="blog-single.html"><i class="far fa-comment-dots"></i>3 Comments</a>
+                                            <li><a href="?controller=posts&user=1"><i class="far fa-comment-dots"></i>3 Comments</a>
                                             </li>
                                         </ul>
                                         <p><?php echo htmlspecialchars($post["post_description"]) ?>
