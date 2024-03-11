@@ -85,7 +85,29 @@ class Helper
         }
         return $hexToken;
     }
-    public function stripTags($content) {
+    public function stripTags($content)
+    {
         return strip_tags($content, "<h1><h2><h3><p><img><audio><video><table><ul><ol><li><a><b><i><u><strong><em><mark><small><big><sub><sup><time><q><blockquote><code><pre><meter><progress>");
+    }
+    public function setSession($name, $value)
+    {
+        session_start();
+        $_SESSION[$name] = $value;
+        session_write_close();
+    }
+    public function getSession($name)
+    {
+        session_start();
+        $value = null;
+        if (isset($_SESSION[$name])) $value = $_SESSION[$name];
+        session_write_close();
+        return $value;
+    }
+    public function push($path)
+    {
+        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
+        $domain = $_SERVER["HTTP_HOST"];
+        header("Location: $protocol://$domain/foodie-blog/$path");
+        exit;
     }
 }

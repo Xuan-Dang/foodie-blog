@@ -6,7 +6,7 @@ Author URL: http://w3layouts.com
 <html lang="en">
 
 <head>
-<base href="http://localhost:8000/foodie-blog/" />
+    <base href="http://localhost:8000/foodie-blog/" />
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -46,8 +46,8 @@ Author URL: http://w3layouts.com
 
                 <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                     <ul class="navbar-nav mx-lg-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="?controller=home">Home <span class="sr-only">(current)</span></a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="?controller=home">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="?controller=post&page=1">Blog</a>

@@ -4,7 +4,7 @@
         <div class="w3l-breadcrumb py-lg-5">
             <div class="container pt-sm-5 pt-4 pb-sm-4">
                 <?php if (isset($pageTitle)) : ?>
-                    <h2 class="inner-text-title font-weight-bold pt-5"><?php echo htmlspecialchars($pageTitle) ?></h2>
+                    <h2 class="inner-text-title font-weight-bold py-3"><?php echo htmlspecialchars($pageTitle) ?></h2>
                 <?php endif; ?>
                 <ul class="breadcrumbs-custom-path">
                     <li><a href="index.html">Home</a></li>

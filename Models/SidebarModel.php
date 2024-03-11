@@ -11,7 +11,7 @@ class SidebarModel extends BaseModel
     {
         $this->db = new BaseModel;
     }
-    public function getAllData($categoryId=null)
+    public function getAllData($categoryId = null, $postId = null)
     {
         $postColumns = [
             "posts.id AS p_id",
@@ -50,8 +50,10 @@ class SidebarModel extends BaseModel
             $newestPostQuery = $this->find(self::POST_TABLE, $postColumns)
                 ->join("p_img_lookup", "post_id", "posts.id")
                 ->join("images", "id", "p_img_lookup.img_id");
-            if ($categoryId) $newestPostQuery->join("p_cat_lookup", "post_id", "posts.id")->where("p_cat_lookup.category_id", [$categoryId])->group("posts.id");
-            $newestPostsResult = $newestPostQuery->order("posts.created_at", "DESC")->limit(5)->_execute();
+            if ($categoryId && !$postId) $newestPostQuery->join("p_cat_lookup", "post_id", "posts.id")->where("p_cat_lookup.category_id", [$categoryId]);
+            if ($postId && !$categoryId) $newestPostQuery->unequal("posts.id", [$postId]);
+            if ($categoryId && $postId) $newestPostQuery->join("p_cat_lookup", "post_id", "posts.id")->where("p_cat_lookup.category_id", [$categoryId])->and()->unequal("posts.id", [$postId]);
+            $newestPostsResult = $newestPostQuery->group("posts.id")->order("posts.created_at", "DESC")->limit(5)->_execute();
             //
             $categoriesResult = $this->find(self::CATEGORY_TABLE, $categoryColumns)
                 ->join("p_cat_lookup", "category_id", "categories.id")

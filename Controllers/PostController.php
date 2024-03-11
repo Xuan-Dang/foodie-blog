@@ -44,43 +44,52 @@ class PostController extends BaseController
         //Define CategoryById
         $categoryById = null;
 
-        if($categoryId) {
+        if ($categoryId) {
             //Get category by id
             $categoryById = $this->categoryModel->getCategoryById($categoryId);
         }
-        if($categoryById && $categoryById["error"]) {
+        if ($categoryById && $categoryById["error"]) {
             die($categoryById["error"]);
         }
-        if($categoryById) {
+        if ($categoryById) {
             $pageTitle = $categoryById["data"]["name"];
             $metaDescription = $categoryById["data"]["description"];
         }
 
         //Get sidebar data
         $sidebarData = $this->sidebarModel->getAllData($categoryId);
-        if($sidebarData["error"]) die($sidebarData["error"]);
+        if ($sidebarData["error"]) die($sidebarData["error"]);
 
         //Define data
         $data =  [
             "posts" => $posts["data"],
             "pagination" => $pagination["data"],
             "pageTitle" => $pageTitle,
-            "category"=> $categoryById ? $categoryById["data"] : null,
-            "metaDescription"=> isset($metaDescription) ? $metaDescription : "",
-            "sidebarData"=>$sidebarData["data"]
+            "category" => $categoryById ? $categoryById["data"] : null,
+            "metaDescription" => isset($metaDescription) ? $metaDescription : "",
+            "sidebarData" => $sidebarData["data"]
         ];
         return $this->view("posts", $data);
     }
-    public function show() {
-        if(!isset($_GET["id"])) die("Đầu vào không hợp lệ");
-
+    public function show()
+    {
+        if (!isset($_GET["id"])) die("Đầu vào không hợp lệ");
         $post = $this->postModel->getOnePost((int)$_GET["id"]);
-        if($post["error"]) die($post["error"]);
-        $sidebarData = $this->sidebarModel->getAllData();
+        if ($post["error"]) die($post["error"]);
+        $sidebarData = $this->sidebarModel->getAllData(null, $post["data"]["p_id"]);
+        if (isset($post["data"]["p_cat_id"])) {
+            $categoryId = $post["data"]["p_cat_id"];
+        }
+        if (isset($categoryId)) {
+            $relatePosts = $this->postModel->getAllPosts(2, 0, ["p_cat_lookup.category_id" => $categoryId], ["posts.id" => $post["data"]["p_id"]]);
+        } else {
+            $relatePosts = [];
+        }
+        if ($relatePosts["error"]) die($relatePosts["error"]);
         $data = [
-            "post"=>$post["data"],
-            "sidebarData"=>$sidebarData["data"],
-
+            "post" => $post["data"],
+            "sidebarData" => $sidebarData["data"],
+            "relatePosts" => $relatePosts["data"],
         ];
         return $this->view("singlePost", $data);
     }

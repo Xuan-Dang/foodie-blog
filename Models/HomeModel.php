@@ -28,6 +28,7 @@ class HomeModel extends BaseModel
                 ->join("images", "id", "p_img_lookup.img_id")
                 ->join("users", "id", "posts.author")
                 ->where("posts.active", [1])
+                ->and()
                 ->where("posts.hot", [1])
                 ->order("posts.created_at", "DESC")
                 ->limit(8)

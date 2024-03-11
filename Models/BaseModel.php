@@ -84,9 +84,26 @@ class BaseModel extends Database
         }
         $placeholdersList = implode(", ", array_keys($placeholders));
         if (strpos($this->sql, 'WHERE') !== false) {
-            $this->sql .= " AND {$column} IN ({$placeholdersList}) ";
+            $this->sql .= " {$column} IN ({$placeholdersList}) ";
         } else {
             $this->sql .= " WHERE {$column} IN ({$placeholdersList}) ";
+        }
+        $this->params = array_merge($this->params, $placeholders);
+        return $this;
+    }
+
+    //Không bằng
+    public function unequal($column, $values) {
+        $placeholders = [];
+        foreach ($values as $index => $value) {
+            $placeholders[":value{$this->count}"] = $value;
+            $this->count++;
+        }
+        $placeholdersList = implode(", ", array_keys($placeholders));
+        if (strpos($this->sql, 'WHERE') !== false) {
+            $this->sql .= " {$column} != $placeholdersList ";
+        } else {
+            $this->sql .= " WHERE {$column} != $placeholdersList ";
         }
         $this->params = array_merge($this->params, $placeholders);
         return $this;
@@ -126,7 +143,7 @@ class BaseModel extends Database
     public function search($column, $search)
     {
         if (strpos($this->sql, 'WHERE') !== false) {
-            $this->sql .= " AND {$column} LIKE :search";
+            $this->sql .= " {$column} LIKE :search";
         } else {
             $this->sql .= " WHERE {$column} LIKE :search";
         }
@@ -137,7 +154,7 @@ class BaseModel extends Database
     public function between($column, $min, $max)
     {
         if (strpos($this->sql, 'WHERE') !== false) {
-            $this->sql .= " AND {$column} BETWEEN :min AND :max";
+            $this->sql .= " {$column} BETWEEN :min AND :max";
         } else {
             $this->sql .= " WHERE {$column} BETWEEN :min AND :max";
         }
@@ -149,6 +166,16 @@ class BaseModel extends Database
     public function _count($table, $column)
     {
         $this->sql = "SELECT count($column) AS result FROM $table";
+        return $this;
+    }
+
+    public function or() {
+        $this->sql .= " OR";
+        return $this;
+    }
+
+    public function and() {
+        $this -> sql .= " AND";
         return $this;
     }
 

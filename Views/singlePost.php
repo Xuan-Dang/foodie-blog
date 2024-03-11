@@ -10,7 +10,7 @@ if (isset($post)) {
 <section class="inner-banner py-5" style="background-image: url('Public/<?php echo htmlspecialchars($post["img_url"]) ?>')">
     <div class="w3l-breadcrumb py-lg-5">
         <div class="container pt-sm-5 pt-4 pb-sm-4">
-            <h1 class="inner-text-title font-weight-bold pt-5"><?php echo htmlspecialchars($post["p_name"]) ?></h1>
+            <h1 class="inner-text-title font-weight-bold py-3"><?php echo htmlspecialchars($post["p_name"]) ?></h1>
             <ul class="breadcrumbs-custom-path">
                 <li><a href="?controller=index">Home</a></li>
                 <li class="active"><span class="fa fa-chevron-right mx-2" aria-hidden="true"></span><?php echo htmlspecialchars($post["p_name"]) ?>
@@ -42,40 +42,28 @@ if (isset($post)) {
                     </ul>
                     <?php echo $post["p_content"]; ?>
                     <div class="item mt-5">
-                        <h3 class="aside-title">Maybe You are interested in </h3>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="list-view list-view1">
-                                    <div class="grids5-info">
-                                        <a href="blog-single.html" class="d-block zoom"><img src="assets/images/blog-single1.jpg" alt="" class="img-fluid radius-image news-image"></a>
-                                        <div class="blog-info align-self">
-                                            <a href="blog-single.html" class="blog-desc1">
-                                                Red Velvet Cupcakes
-                                            </a>
-                                            <div class="author align-items-center mb-1">
-                                                <a href="#url">Muzahen Ris</a> in <a href="#url">Ideas</a>
+                        <?php if (isset($relatePosts) && count($relatePosts) > 0) : ?>
+                            <h3 class="aside-title">Maybe You are interested in </h3>
+                            <div class="row">
+                                <?php foreach ($relatePosts as $index => $relatePost) : ?>
+                                    <div class="col-sm-6">
+                                        <div class="list-view list-view1">
+                                            <div class="grids5-info">
+                                                <a href="?controller=post&action=show&url=<?php echo htmlspecialchars($relatePost["post_url"]) ?>&id=<?php echo htmlspecialchars($relatePost["post_id"]) ?>" class="d-block zoom"><img src="Public/<?php echo htmlspecialchars($relatePost["img_url"]) ?>" alt="<?php echo htmlspecialchars($relatePost["img_alt"]) ?>" class="img-fluid radius-image news-image"></a>
+                                                <div class="blog-info align-self">
+                                                    <a href="?controller=post&action=show&url=<?php echo htmlspecialchars($relatePost["post_url"]) ?>&id=<?php echo htmlspecialchars($relatePost["post_id"]) ?>" class="blog-desc1">
+                                                        <?php echo htmlspecialchars($relatePost["post_name"]) ?>
+                                                    </a>
+                                                    <div class="author align-items-center mb-1">
+                                                        <a href="#url"><?php echo htmlspecialchars($relatePost["username"]) ?></a> in <a href="#url"><?php echo htmlspecialchars($relatePost["cat_name"]) ?></a>
+                                                    </div>
+                                                </div>
                                             </div>
-
                                         </div>
                                     </div>
-                                </div>
+                                <?php endforeach; ?>
                             </div>
-
-                            <div class="col-sm-6 mt-sm-0 mt-4">
-                                <div class="list-view list-view1">
-                                    <div class="grids5-info">
-                                        <a href="blog-single.html" class="d-block zoom"><img src="assets/images/blog-single2.jpg" alt="" class="img-fluid radius-image news-image"></a>
-                                        <div class="blog-info align-self">
-                                            <a href="blog-single.html" class="blog-desc1">Chocolate Ice Cream</a>
-                                            <div class="author align-items-center mb-1">
-                                                <a href="#url">Maureen Bio</a> in <a href="#url">Cooking</a>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <?php endif; ?>
                     </div>
 
                     <div class="author-cardview my-5">
@@ -93,8 +81,7 @@ if (isset($post)) {
 
                                 <div class="social mt-4">
                                     <li><a href="#facebook" class="facebook"><span class="fab fa-facebook-f"></span></a></li>
-                                    <li><a href="#twitter" class="twitter"><span class="fab fa-twitter"></span></a>
-                                    </li>
+                                    <li><a href="#twitter" class="twitter"><span class="fab fa-twitter"></span></a></li>
                                     <li><a href="#instagram" class="instagram"><span class="fab fa-instagram"></span></a></li>
                                     <li><a href="#linkedin" class="linkedin"><span class="fab fa-linkedin-in"></span></a></li>
                                 </div>
@@ -102,17 +89,6 @@ if (isset($post)) {
                             </div>
                         </div>
                     </div>
-                    <nav class="post-navigation row mt-5 py-4">
-                        <div class="post-prev col-6 pr-sm-5">
-                            <span class="nav-title">
-                                <i class="fas fa-arrow-left mr-1"></i> Prev Post </span>
-
-                        </div>
-                        <div class="post-next col-6 pl-sm-5 text-right">
-                            <span class="nav-title">
-                                Next Post <i class="fas fa-arrow-right ml-1"></i><span class="next-post pull-right"></span> </span>
-                        </div>
-                    </nav>
                     <div class="comments">
                         <h3 class="aside-title ">Recent comments(2)</h3>
                         <div class="comments-grids">
