@@ -103,6 +103,16 @@ class Helper
         session_write_close();
         return $value;
     }
+    public function detroySession() {
+        session_start();
+        session_destroy();
+        session_write_close();
+    }
+    public function detroySesssionByName($name) {
+        session_start();
+        unset($_SESSION[$name]);
+        session_write_close();
+    }
     public function push($path)
     {
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");

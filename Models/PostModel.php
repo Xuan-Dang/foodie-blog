@@ -31,8 +31,7 @@ class PostModel extends BaseModel
                 ->join("images", "id", "p_img_lookup.img_id")
                 ->join("users", "id", "posts.author")
                 ->join("p_cat_lookup", "post_id", "posts.id")
-                ->join("categories", "id", "p_cat_lookup.category_id")
-                ->where("posts.active", [1]);
+                ->join("categories", "id", "p_cat_lookup.category_id");
             if (count($conditions) > 0) {
                 foreach ($conditions as $key => $value) {
                     if ($key === "search") {

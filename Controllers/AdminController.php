@@ -19,34 +19,27 @@ class AdminController extends BaseController
     }
     public function login()
     {
-        try {
-            $this->helper->handleError();
-            if (isset($_POST["login"])) {
-                $email = $_POST["username"] ?? null;
-                $password = $_POST["password"] ?? null;
-                if (!$email) {
-                    return $this->view("admin.login", ["error" => "Username cannot be empty"]);
-                }
-                if (!$password) {
-                    return $this->view("admin.login", ["error" => "Password cannot be empty"]);
-                }
-                $user = $this->userModel->adminLogin($email, $password);
-                if (count($user["data"]) === 0) {
-                    return $this->view("admin.login", ["error" => "Email or password is incorrect"]);
-                }
-                $this->helper->setSession("user", $user["data"]);
-                return $this->helper->push("?controller=admin");
-            } else {
-                $user = $this->helper->getSession("user");
-                if ($user && (int)$user["role"] === 1) {
-                    $this->helper->push("?controller=admin");
-                }
-                return $this->view("admin.login");
+        if (isset($_POST["login"])) {
+            $email = $_POST["username"] ?? null;
+            $password = $_POST["password"] ?? null;
+            if (!$email) {
+                return $this->view("admin.login", ["error" => "Username cannot be empty"]);
             }
-        }catch(Exception $e) {
-            echo $e->getMessage();
-        }catch(Error $e) {
-            echo $e->getMessage();
+            if (!$password) {
+                return $this->view("admin.login", ["error" => "Password cannot be empty"]);
+            }
+            $user = $this->userModel->adminLogin($email, $password);
+            if (count($user["data"]) === 0) {
+                return $this->view("admin.login", ["error" => "Email or password is incorrect"]);
+            }
+            $this->helper->setSession("user", $user["data"]);
+            return $this->helper->push("?controller=admin");
+        } else {
+            $user = $this->helper->getSession("user");
+            if ($user && (int)$user["role"] === 1) {
+                $this->helper->push("?controller=admin");
+            }
+            return $this->view("admin.login");
         }
     }
 }

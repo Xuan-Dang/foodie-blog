@@ -4,6 +4,7 @@ class PostController extends BaseController
     private $postModel;
     private $categoryModel;
     private $sidebarModel;
+    private $helper;
     public function __construct()
     {
         $this->loadModel("PostModel");
@@ -12,10 +13,11 @@ class PostController extends BaseController
         $this->postModel = new PostModel;
         $this->categoryModel = new CategoryModel;
         $this->sidebarModel = new SidebarModel;
+        $this->helper = new Helper;
     }
     public function index()
     {
-        $condition = [];
+        $condition = ["posts.active" => 1];
         $page = $_GET["page"] ?? 1;
         $limit = $_GET["limit"] ?? 8;
         $offset = ($page - 1) * $limit;
@@ -92,5 +94,20 @@ class PostController extends BaseController
             "relatePosts" => $relatePosts["data"],
         ];
         return $this->view("singlePost", $data);
+    }
+    public function list() {
+        $user = $this->helper->getSession("user");
+        if (!$user || (int)$user["role"] !== 1) {
+            return $this->helper->push("?controller=home");
+        }
+        return $this->view("admin.post.list", ["user" => $user]);
+    }
+    public function store()
+    {
+        $user = $this->helper->getSession("user");
+        if (!$user || (int)$user["role"] !== 1) {
+            return $this->helper->push("?controller=home");
+        }
+        return $this->view("admin.post.add", ["user" => $user]);
     }
 }

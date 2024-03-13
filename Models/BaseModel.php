@@ -170,12 +170,16 @@ class BaseModel extends Database
     }
 
     public function or() {
-        $this->sql .= " OR";
+        if (strpos($this->sql, 'WHERE')) {
+            $this->sql .= " OR";
+        }
         return $this;
     }
 
     public function and() {
-        $this -> sql .= " AND";
+        if (strpos($this->sql, 'WHERE')) {
+            $this -> sql .= " AND";
+        }
         return $this;
     }
 

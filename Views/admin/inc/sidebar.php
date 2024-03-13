@@ -2,25 +2,28 @@
     <div class="sidebar-nav navbar-collapse">
         <ul class="nav" id="side-menu">
             <li>
-                <a href="index.html"><i class="fa fa-dashboard fa-fw nav_icon"></i>Dashboard</a>
+                <a href="?controller=admin"><i class="fa fa-dashboard fa-fw nav_icon"></i>Dashboard</a>
             </li>
             <li>
-                <a href="#"><i class="fa fa-laptop nav_icon"></i>Layouts<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-list-alt"></i> Bài viết<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="grids.html">Grid System</a>
+                        <a href="?controller=post&action=list">Danh sách bài viết</a>
+                    </li>
+                    <li>
+                        <a href="?controller=post&action=store">Tạo bài viết mới</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
             <li>
-                <a href="#"><i class="fa fa-indent nav_icon"></i>Menu Levels<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-indent nav_icon"></i>Danh mục bài viết<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="graphs.html">Graphs</a>
+                        <a href="?controller=category&action=list">Danh sách danh mục bài viết</a>
                     </li>
                     <li>
-                        <a href="typography.html">Typography</a>
+                        <a href="?controller=category&action=store">Tạo danh mục bài viết</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->

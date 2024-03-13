@@ -13,17 +13,39 @@ class CategoryModel extends BaseModel
             "categories.id AS cat_id",
             "categories.name AS cat_name",
             "categories.url AS cat_url",
+            "categories.description AS cat_desc",
             "count(p_cat_lookup.post_id) AS post_count"
         ];
         try {
             $this->db->_connect();
             $query = $this->db
                 ->find(self::TABLE, $columns)
-                ->join("p_cat_lookup", "category_id", "categories.id");
+                ->join("p_cat_lookup", "category_id", "categories.id")
+                ->group("categories.id");
             if ($limit) $query->limit($limit);
             if ($offset) $query->offset($offset);
-            $categories = $query->group("categories.id")->_execute();
+            $categories = $query->_execute();
             return ["data" => $categories, "error" => null];
+        } catch (Exception $e) {
+            return ["data" => null, "error" => $e->getMessage()];
+        } catch (Error $e) {
+            die($e);
+            return ["data" => null, "error" => $e->getMessage()];
+        } finally {
+            $this->db->_close();
+        }
+    }
+    public function getListCategory($limit, $offset)
+    {
+        $columns = [
+            "name",
+            "url",
+            "description",
+        ];
+        try {
+            $this->db->_connect();
+            $categoires = $this->db->find(self::TABLE, $columns)->limit($limit)->offset($offset)->_execute();
+            return ["data" => $categoires, "error" => null];
         } catch (Exception $e) {
             return ["data" => null, "error" => $e->getMessage()];
         } catch (Error $e) {
@@ -44,8 +66,23 @@ class CategoryModel extends BaseModel
         try {
             $this->db->_connect();
             $category = $this->db->find(self::TABLE, $columns)->where("id", [$id])->limit(1)->_execute();
-            return ["data"=>$category[0], "error"=>null];
-        }catch (Exception $e) {
+            return ["data" => $category[0], "error" => null];
+        } catch (Exception $e) {
+            return ["data" => null, "error" => $e->getMessage()];
+        } catch (Error $e) {
+            die($e);
+            return ["data" => null, "error" => $e->getMessage()];
+        } finally {
+            $this->db->_close();
+        }
+    }
+    public function storeNewCategory($data)
+    {
+        try {
+            $this->db->_connect();
+            $createdId = $this->db->store("categories", $data)->_execute();
+            return ["data" => $createdId, "error" => null];
+        } catch (Exception $e) {
             return ["data" => null, "error" => $e->getMessage()];
         } catch (Error $e) {
             die($e);
