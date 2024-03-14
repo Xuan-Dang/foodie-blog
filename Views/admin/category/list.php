@@ -6,6 +6,9 @@
         if(isset($errorMessage) && $errorMessage) {
             echo "<div class='alert alert-danger' role='alert'>{$errorMessage}</div>";
         }
+        if(isset($message) && $message) {
+            echo "<div class='alert alert-danger' role='alert'>{$message}</div>";
+        }
     ?>
         <table class="table">
             <thead>
@@ -23,6 +26,11 @@
                 ?>
             </tbody>
         </table>
+        <?php 
+            if(isset($pagination)) {
+                echo $pagination;
+            }
+        ?>
     </div>
 </div>
 <?php include "Views/admin/inc/footer.php" ?>

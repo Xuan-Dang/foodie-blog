@@ -78,6 +78,7 @@ class PostController extends BaseController
         if (!isset($_GET["id"])) die("Đầu vào không hợp lệ");
         $post = $this->postModel->getOnePost((int)$_GET["id"]);
         if ($post["error"]) die($post["error"]);
+        if(!$post["data"]) die("404");
         $sidebarData = $this->sidebarModel->getAllData(null, $post["data"]["p_id"]);
         if (isset($post["data"]["p_cat_id"])) {
             $categoryId = $post["data"]["p_cat_id"];

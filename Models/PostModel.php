@@ -144,7 +144,7 @@ class PostModel extends BaseModel
                 ->order("posts.created_at", "DESC")
                 ->limit(1)
                 ->_execute();
-            return ["data" => $post[0], "error" => null];
+            return ["data" => $post[0] ?? null, "error" => null];
         } catch (Exception $e) {
             return ["data" => null, "error" => $e->getMessage()];
         } catch (Error $e) {

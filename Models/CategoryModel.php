@@ -3,9 +3,11 @@ class CategoryModel extends BaseModel
 {
     const TABLE = "categories";
     private $db;
+    private $helper;
     public function __construct()
     {
         $this->db = new BaseModel;
+        $this->helper = new Helper;
     }
     public function getAllCategory($limit = null, $offset = null)
     {
@@ -38,6 +40,7 @@ class CategoryModel extends BaseModel
     public function getListCategory($limit, $offset)
     {
         $columns = [
+            "id",
             "name",
             "url",
             "description",
@@ -86,6 +89,38 @@ class CategoryModel extends BaseModel
             return ["data" => null, "error" => $e->getMessage()];
         } catch (Error $e) {
             die($e);
+            return ["data" => null, "error" => $e->getMessage()];
+        } finally {
+            $this->db->_close();
+        }
+    }
+    public function pagiantion($limit, $page) {
+        try {
+            $this->db->_connect();
+            $count = $this->db->_count(self::TABLE, "id")->_execute();
+            $pagination = $this->helper->generateAdminPagination($limit, $page, $count[0]["result"]);
+            return ["data"=>$pagination, "error"=>null];
+        }catch (Exception $e) {
+            return ["data" => null, "error" => $e->getMessage()];
+        } catch (Error $e) {
+            return ["data" => null, "error" => $e->getMessage()];
+        } finally {
+            $this->db->_close();
+        }
+    }
+    public function deleteCategory($id) {
+        try {
+            $this->db->_connect();
+            $this->db->beginTransaction();
+            $this->db->deleteOne(self::TABLE, "id", $id)->_execute();
+            $this->db->deleteOne("p_cat_lookup", "category_id", $id)->_execute();
+            $this->db->commit();
+            return ["data"=>"success", "error"=>null];
+        }catch (Exception $e) {
+            $this->db->rollBack();
+            return ["data" => null, "error" => $e->getMessage()];
+        } catch (Error $e) {
+            $this->db->rollBack();
             return ["data" => null, "error" => $e->getMessage()];
         } finally {
             $this->db->_close();
